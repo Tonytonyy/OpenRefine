@@ -35,8 +35,6 @@ package com.google.refine.expr.functions.html;
 
 import java.util.Properties;
 
-import org.json.JSONException;
-import org.json.JSONWriter;
 import org.jsoup.Jsoup;
 
 import com.google.refine.grel.Function;
@@ -56,14 +54,18 @@ public class ParseHtml implements Function {
 
 
     @Override
-    public void write(JSONWriter writer, Properties options)
-        throws JSONException {
-
-        writer.object();
-        writer.key("description"); writer.value("Parses a string as HTML");
-        writer.key("params"); writer.value("string s");
-        writer.key("returns"); writer.value("HTML object");
-        writer.endObject();
+    public String getDescription() {
+        return "Parses a string as HTML";
+    }
+    
+    @Override
+    public String getParams() {
+        return "string s";
+    }
+    
+    @Override
+    public String getReturns() {
+        return "HTML object";
     }
 }
 

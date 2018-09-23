@@ -35,8 +35,6 @@ package com.google.refine.expr.functions.html;
 
 import java.util.Properties;
 
-import org.json.JSONException;
-import org.json.JSONWriter;
 import org.jsoup.nodes.Element;
 
 import com.google.refine.expr.EvalError;
@@ -64,14 +62,18 @@ public class SelectHtml implements Function {
 
 
     @Override
-    public void write(JSONWriter writer, Properties options)
-        throws JSONException {
-
-        writer.object();
-        writer.key("description"); writer.value("Selects an element from an HTML elementn using selector syntax");
-        writer.key("params"); writer.value("Element e, String s");
-        writer.key("returns"); writer.value("HTML Elements");
-        writer.endObject();
+    public String getDescription() {
+        return "Selects an element from an HTML elementn using selector syntax";
+    }
+    
+    @Override
+    public String getParams() {
+        return "Element e, String s";
+    }
+    
+    @Override
+    public String getReturns() {
+        return "HTML Elements";
     }
 }
 
