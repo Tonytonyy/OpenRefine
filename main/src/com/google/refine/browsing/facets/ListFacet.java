@@ -35,20 +35,16 @@ package com.google.refine.browsing.facets;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONWriter;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.google.refine.ProjectManager;
 import com.google.refine.browsing.DecoratedValue;
@@ -109,30 +105,6 @@ public class ListFacet implements Facet {
         @JsonProperty("selectError")
         public boolean selectError;
 
-        @Override
-        public void write(JSONWriter writer, Properties options)
-                throws JSONException {
-            writer.object();
-            writer.key("type"); writer.value("list");
-            writer.key("name"); writer.value(name);
-            writer.key("expression"); writer.value(expression);
-            writer.key("columnName"); writer.value(columnName);
-            writer.key("invert"); writer.value(invert);
-            writer.key("selection"); writer.array();
-            for (DecoratedValue choice : selection) {
-                writer.object();
-                writer.key("v");
-                choice.write(writer, options);
-                writer.endObject();
-            }
-            writer.endArray();
-            writer.key("omitBlank"); writer.value(omitBlank);
-            writer.key("selectBlank"); writer.value(selectBlank);
-            writer.key("omitError"); writer.value(omitError);
-            writer.key("selectError"); writer.value(selectError);
-            writer.endObject();
-        }
-        
         @JsonProperty("selection")
         public List<DecoratedValueWrapper> getWrappedSelection() {
             return selection.stream()
@@ -276,47 +248,6 @@ public class ListFacet implements Facet {
             return new OtherChoice(_config.selectError, _errorCount);
         }
         return null;
-    }
-
-    @Override
-    public void write(JSONWriter writer, Properties options)
-            throws JSONException {
-        
-        writer.object();
-        writer.key("name"); writer.value(_config.name);
-        writer.key("expression"); writer.value(_config.expression);
-        writer.key("columnName"); writer.value(_config.columnName);
-        writer.key("invert"); writer.value(_config.invert);
-        
-        if (_errorMessage != null) {
-            writer.key("error"); writer.value(_errorMessage);
-        } else if (_choices.size() > getLimit()) {
-            writer.key("error"); writer.value(ERR_TOO_MANY_CHOICES);
-            writer.key("choiceCount"); writer.value(_choices.size());
-        } else {
-            writer.key("choices"); writer.array();
-            for (NominalFacetChoice choice : _choices) {
-                choice.write(writer, options);
-            }
-            writer.endArray();
-            
-            if (!_config.omitBlank && (_config.selectBlank || _blankCount > 0)) {
-                writer.key("blankChoice");
-                writer.object();
-                writer.key("s"); writer.value(_config.selectBlank);
-                writer.key("c"); writer.value(_blankCount);
-                writer.endObject();
-            }
-            if (!_config.omitError && (_config.selectError || _errorCount > 0)) {
-                writer.key("errorChoice");
-                writer.object();
-                writer.key("s"); writer.value(_config.selectError);
-                writer.key("c"); writer.value(_errorCount);
-                writer.endObject();
-            }
-        }
-        
-        writer.endObject();
     }
     
     protected int getLimit() {
