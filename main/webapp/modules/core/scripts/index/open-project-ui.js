@@ -261,45 +261,13 @@ Refine.OpenProjectUI.prototype._renderProjects = function(data) {
       .attr("href", "project?project=" + project.id)
       .appendTo($(tr.insertCell(tr.cells.length)));
       
-<<<<<<< HEAD
-        var tagsCell = $(tr.insertCell(tr.cells.length));
-        var tags = project.tags;
-        tags.map(function(tag){
-            $("<span/>")
-            .addClass("project-tag")
-            .text(tag)
-            .attr("title", $.i18n._('core-index-open/edit-tags'))
-            .appendTo(tagsCell);
-            $(tr).addClass(tag);
-        });
-        
-        var appendMetaField = function(data) {
-            $('<div></div>')
-            .html(data)
-            .appendTo($(tr.insertCell(tr.cells.length)));
-        };
-        
-        appendMetaField(project.subject);
-        appendMetaField(project.description, '20%');
-        appendMetaField(project.rowCount);
-        
-        var data = project.userMetadata;
-        for(var i in data)
-        {
-             if (data[i].display === true) {
-                 appendMetaField(data[i].value); 
-             }
-        }
-=======
-      
-    
     var tagsCell = $(tr.insertCell(tr.cells.length));
     var tags = project.tags;
     tags.map(function(tag){
         $("<span/>")
         .addClass("project-tag")
         .text(tag)
-        .attr("title", $.i18n._('core-index-open')["edit-tags"])
+        .attr("title", $.i18n._('core-index-open/edit-tags'))
         .appendTo(tagsCell);
         $(tr).addClass(tag);
     });
@@ -309,7 +277,6 @@ Refine.OpenProjectUI.prototype._renderProjects = function(data) {
         $('<div></div>')
         .html(data)
         .appendTo($(tr.insertCell(tr.cells.length)));
->>>>>>> Revert "data package metadata  (#1398)"
     };
     
     appendMetaField(project.creator);
